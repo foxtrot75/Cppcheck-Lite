@@ -1,8 +1,8 @@
 {
   "name": "cppcheck-lite",
   "displayName": "Cppcheck Lite",
-  "description": "A minimal VS Code extension that runs cppcheck on C/C++ files upon save and shows issues in the Problems panel.",
-  "version": "1.1.0",
+  "description": "A minimalistic VS Code extension that runs cppcheck on C/C++ files upon save and shows issues in the Problems panel.",
+  "version": "1.2.0",
     "engines": {
     "vscode": "^1.96.0"
   },
@@ -33,47 +33,60 @@
     ],
   "main": "./out/extension.js",
   "contributes": {
-    "configuration": {
-      "type": "object",
-      "title": "Cppcheck Lite Configuration",
-      "properties": {
-        "cppcheck-lite.enable": {
-          "type": "boolean",
-          "default": true,
-          "description": "Enable or disable the Cppcheck Lite extension."
-        },
-        "cppcheck-lite.minSeverity": {
-          "type": "string",
-          "enum": [
-            "info",
-            "warning",
-            "error"
-          ],
-          "default": "info",
-          "description": "Minimum severity of issues to report (info, warning, or error)."
-        },
-        "cppcheck-lite.standard": {
-          "type": "string",
-          "enum": [
-            "c89",
-            "c99",
-            "c11",
-            "c++03",
-            "c++11",
-            "c++14",
-            "c++17",
-            "c++20"
-          ],
-          "default": "c++20",
-          "description": "C/C++ standard to use for cppcheck (`--std=<id>`)."
-        },
-        "cppcheck-lite.arguments": {
-          "type": "string",
-          "default": "",
-          "description": "Additional command line arguments for cppcheck."
+    "configuration": [
+      {
+        "title": "Cppcheck Lite (General)",
+        "order": 1,
+        "properties": {
+          "cppcheck-lite.enable": {
+            "type": "boolean",
+            "default": true,
+            "description": "Enable or disable the Cppcheck Lite extension."
+          },
+          "cppcheck-lite.minSeverity": {
+            "type": "string",
+            "enum": [
+              "info",
+              "warning",
+              "error"
+            ],
+            "default": "info",
+            "description": "Minimum severity of issues to report (info, warning, or error)."
+          },
+          "cppcheck-lite.standard": {
+            "type": "string",
+            "enum": [
+              "c89",
+              "c99",
+              "c11",
+              "c++03",
+              "c++11",
+              "c++14",
+              "c++17",
+              "c++20"
+            ],
+            "default": "c++20",
+            "description": "C/C++ standard to use for cppcheck (`--std=<id>`)."
+          }
         }
-            }
-    }
+      },
+      {
+        "title": "Cppcheck Lite (Advanced)",
+        "order": 2,
+        "properties": {
+          "cppcheck-lite.path": {
+            "type": "string",
+            "default": "",
+            "description": "Path to the cppcheck executable. If empty, uses 'cppcheck' from the system PATH."
+          },
+          "cppcheck-lite.arguments": {
+            "type": "string",
+            "default": "",
+            "description": "Additional command line arguments for cppcheck."
+          }
+        }
+      }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
