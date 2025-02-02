@@ -46,6 +46,10 @@ export function activate(context: vscode.ExtensionContext) {
 
     // Listen for file saves
     vscode.workspace.onDidSaveTextDocument(async (document: vscode.TextDocument) => {
+        if (!["c", "cpp"].includes(document.languageId)) {
+            // Not a C/C++ file, skip
+            return;
+        }
         const config = vscode.workspace.getConfiguration();
         const isEnabled = config.get<boolean>("cppcheck-lite.enable", true);
         const extraArgs = config.get<string>("cppcheck-lite.arguments", "");

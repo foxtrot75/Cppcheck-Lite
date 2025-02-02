@@ -1,0 +1,36 @@
+<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background (optional, often transparent for an icon) -->
+  <rect width="120" height="120" fill="none"/>
+
+  <!-- C++ Text -->
+  <text
+    x="10"
+    y="60"
+    fill="#00599C"
+    font-size="36"
+    font-family="sans-serif"
+    font-weight="bold">
+    C++
+  </text>
+  
+  <!-- Check Mark -->
+  <path
+    d="M45 75 L55 85 L80 50"
+    fill="none"
+    stroke="#4CAF50"
+    stroke-width="8"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  
+  <!-- 'Lite' Label (Optional) -->
+  <text
+    x="10"
+    y="95"
+    fill="#4CAF50"
+    font-size="20"
+    font-family="sans-serif"
+    font-weight="normal">
+    Lite
+  </text>
+</svg>
