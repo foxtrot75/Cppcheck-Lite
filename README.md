@@ -31,12 +31,8 @@ Please submit any issues or feature requests via the [GitHub Issues page](https:
 
 ## Release Notes
 
-### 0.1.0
-- Initial release of **Cppcheck Lite**, for local testing only
-
-### 0.2.0
-- Only check c/c++ files, instead of everything in the workspace
-- Added logo
+### 1.0.0
+- Initial release
 
 
 ---
