@@ -44,8 +44,7 @@ export function activate(context: vscode.ExtensionContext) {
     const diagnosticCollection = vscode.languages.createDiagnosticCollection("Cppcheck Lite");
     context.subscriptions.push(diagnosticCollection);
 
-    // Listen for file saves
-    vscode.workspace.onDidSaveTextDocument(async (document: vscode.TextDocument) => {
+    async function handleDocument(document: vscode.TextDocument) {
         if (!["c", "cpp"].includes(document.languageId)) {
             // Not a C/C++ file, skip
             return;
@@ -69,7 +68,21 @@ export function activate(context: vscode.ExtensionContext) {
             standard,
             diagnosticCollection
         );
+    }
+
+    // Listen for file saves
+    vscode.workspace.onDidSaveTextDocument(handleDocument, null, context.subscriptions);
+
+    // Run cppcheck when a file is opened
+    vscode.workspace.onDidOpenTextDocument(handleDocument, null, context.subscriptions);
+
+    // Run cppcheck for all open files when the workspace is opened
+    vscode.workspace.onDidChangeWorkspaceFolders(() => {
+        vscode.workspace.textDocuments.forEach(handleDocument);
     }, null, context.subscriptions);
+
+    // Run cppcheck for all open files at activation (for already opened workspaces)
+    vscode.workspace.textDocuments.forEach(handleDocument);
 
     // Clean up diagnostics when a file is closed
     vscode.workspace.onDidCloseTextDocument((document: vscode.TextDocument) => {
@@ -128,6 +141,7 @@ async function runCppcheck(
 
             const range = new vscode.Range(line, col, line, col);
             const diagnostic = new vscode.Diagnostic(range, message, diagSeverity);
+            diagnostic.code = standard; 
 
             diagnostics.push(diagnostic);
         }
