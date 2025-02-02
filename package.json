@@ -1,0 +1,96 @@
+{
+  "name": "cppcheck-lite",
+  "displayName": "Cppcheck Lite",
+  "description": "A minimal VS Code extension that runs cppcheck on C/C++ files upon save and shows issues in the Problems panel.",
+  "version": "0.1.0",
+    "engines": {
+    "vscode": "^1.96.0"
+  },
+  "author": "Justus Rijke <justusrijke@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JustusRijke/Cppcheck-Lite.git"
+  },
+  "publisher": "Justus Rijke",
+  "license": "MIT",
+  "keywords": [
+    "cppcheck",
+    "linting",
+    "c",
+    "c++",
+    "analysis",
+    "diagnostic",
+    "linter"
+  ],  
+  "categories": [
+    "Linters"
+  ],
+  "activationEvents": [
+    "onLanguage:cpp",
+    "onLanguage:c",
+    "onLanguage:c++"
+    ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "configuration": {
+      "type": "object",
+      "title": "Cppcheck Lite Configuration",
+      "properties": {
+        "cppcheck-lite.enable": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable or disable the Cppcheck Lite extension."
+        },
+        "cppcheck-lite.minSeverity": {
+          "type": "string",
+          "enum": [
+            "info",
+            "warning",
+            "error"
+          ],
+          "default": "info",
+          "description": "Minimum severity of issues to report (info, warning, or error)."
+        },
+        "cppcheck-lite.standard": {
+          "type": "string",
+          "enum": [
+            "c89",
+            "c99",
+            "c11",
+            "c++03",
+            "c++11",
+            "c++14",
+            "c++17",
+            "c++20"
+          ],
+          "default": "c++20",
+          "description": "C/C++ standard to use for cppcheck (`--std=<id>`)."
+        },
+        "cppcheck-lite.arguments": {
+          "type": "string",
+          "default": "",
+          "description": "Additional command line arguments for cppcheck."
+        }
+            }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.96.0",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "20.x",
+    "@typescript-eslint/eslint-plugin": "^8.17.0",
+    "@typescript-eslint/parser": "^8.17.0",
+    "eslint": "^9.16.0",
+    "typescript": "^5.7.2",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.4.1"
+  }
+}
