@@ -23,7 +23,7 @@ Examples of installing Cppcheck:
 
 ## Extension Settings
 
-This extension contributes the following settings under `cppcheck.*`:
+This extension contributes the following settings under `cppcheck-lite.*`:
 
 - **`cppcheck-lite.enable`**: (boolean) Enable or disable the extension.  
 - **`cppcheck-lite.minSeverity`**: (string) Minimum severity to report (`info`, `warning`, or `error`).  `info` shows style, performance, portability and information messages.
