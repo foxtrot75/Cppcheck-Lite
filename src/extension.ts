@@ -1,6 +1,5 @@
 import * as vscode from 'vscode';
 import * as cp from 'child_process';
-import * as fs from 'fs';
 
 enum SeverityNumber {
     Info = 0,
@@ -50,6 +49,14 @@ export function activate(context: vscode.ExtensionContext) {
             return;
             
         }
+
+        // Check if the document is visible in any editor
+        const isVisible = vscode.window.visibleTextEditors.some(editor => editor.document.uri.toString() === document.uri.toString());
+        if (!isVisible) {
+            // Document is not visible, skip
+            return;
+        }
+
         const config = vscode.workspace.getConfiguration();
         const isEnabled = config.get<boolean>("cppcheck-lite.enable", true);
         const extraArgs = config.get<string>("cppcheck-lite.arguments", "");

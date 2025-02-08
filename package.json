@@ -2,7 +2,7 @@
   "name": "cppcheck-lite",
   "displayName": "Cppcheck Lite",
   "description": "A minimalistic VS Code extension that runs cppcheck on C/C++ files upon save and shows issues in the Problems panel.",
-  "version": "1.2.0",
+  "version": "1.2.1",
     "engines": {
     "vscode": "^1.96.0"
   },
