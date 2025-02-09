@@ -62,7 +62,8 @@ export function activate(context: vscode.ExtensionContext) {
         const extraArgs = config.get<string>("cppcheck-lite.arguments", "");
         const minSevString = config.get<string>("cppcheck-lite.minSeverity", "info");
         const standard = config.get<string>("cppcheck-lite.standard", "c++17");
-        const userPath = config.get<string>("cppcheck-lite.path") || "";
+        const userPath = config.get<string>("cppcheck-lite.path")?.trim() || "";
+        const commandPath = userPath ? userPath : "cppcheck";
 
         // If disabled, clear any existing diagnostics for this doc.
         if (!isEnabled) {
@@ -70,23 +71,16 @@ export function activate(context: vscode.ExtensionContext) {
             return;
         }
 
-        // Check if the user specified a path for cppcheck.
-        const cmd = userPath.trim() ? userPath.trim() : "cppcheck";
-
-        // Try running "<cmd> --version" to ensure cppcheck is available.
-        cp.exec(`${cmd} --version`, (error) => {
+        // Check if cppcheck is available
+        cp.exec(`${commandPath} --version`, (error) => {
             if (error) {
                 vscode.window.showErrorMessage(
-                    `Cppcheck Lite: Could not find or run '${cmd}'. ` +
+                    `Cppcheck Lite: Could not find or run '${commandPath}'. ` +
                     `Please install cppcheck or set 'cppcheck-lite.path' correctly.`
                 );
                 return;
             }
         });
-
-        // Possibly a different path set in workspace settings vs. global?
-        const localPath = config.get<string>("cppcheck-lite.path") || "";
-        const commandPath = localPath.trim() ? localPath.trim() : "cppcheck";
 
         await runCppcheck(
             document,
@@ -131,8 +125,8 @@ async function runCppcheck(
 
     const filePath = document.fileName;
     const minSevNum = parseMinSeverity(minSevString);
-    const standardArg = `--std=${standard}`;
-    const command = `${commandPath} ${standardArg} ${extraArgs} "${filePath}"`;
+    const standardArg = standard !== "<none>" ? `--std=${standard}` : "";
+    const command = `${commandPath} ${standardArg} ${extraArgs} "${filePath}"`.trim();
 
     console.log("Cppcheck command:", command);
 
@@ -169,7 +163,7 @@ async function runCppcheck(
 
             const range = new vscode.Range(line, col, line, col);
             const diagnostic = new vscode.Diagnostic(range, message, diagSeverity);
-            diagnostic.code = standard; 
+            diagnostic.code = standard !== "<none>" ? standard : "";; 
 
             diagnostics.push(diagnostic);
         }

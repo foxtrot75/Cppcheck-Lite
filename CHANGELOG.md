@@ -1,7 +1,9 @@
 # Change Log
 
-## [1.2.1] - 2025-02-8
+## [1.3.0] - UNRELEASED
+- Added <none> option to `cppcheck-lite.standard`, allowing users to specify it manually via `cppcheck-lite.arguments` or let `cppcheck` use its default setting.
 
+## [1.2.1] - 2025-02-08
 - **FIX** Ignore background file openings (e.g., during symbol renaming) to prevent unnecessary Cppcheck runs and clutter in the Problems tab.
 
 ## [1.2.0] - 2025-02-02
