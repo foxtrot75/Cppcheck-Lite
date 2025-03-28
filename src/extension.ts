@@ -72,7 +72,7 @@ export function activate(context: vscode.ExtensionContext) {
         }
 
         // Check if cppcheck is available
-        cp.exec(`${commandPath} --version`, (error) => {
+        cp.exec(`"${commandPath}" --version`, (error) => {
             if (error) {
                 vscode.window.showErrorMessage(
                     `Cppcheck Lite: Could not find or run '${commandPath}'. ` +
@@ -126,7 +126,7 @@ async function runCppcheck(
     const filePath = document.fileName;
     const minSevNum = parseMinSeverity(minSevString);
     const standardArg = standard !== "<none>" ? `--std=${standard}` : "";
-    const command = `${commandPath} ${standardArg} ${extraArgs} "${filePath}"`.trim();
+    const command = `"${commandPath}" ${standardArg} ${extraArgs} "${filePath.replace(/\\/g, '/')}"`.trim();
 
     console.log("Cppcheck command:", command);
 
