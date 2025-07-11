@@ -1,5 +1,8 @@
 # Change Log
 
+## [1.3.1] - 2025-07-11
+- Fix bug with negative column number in range vscode ([#2](https://github.com/JustusRijke/Cppcheck-Lite/pull/2))
+
 ## [1.3.0] - 2025-05-28
 - Added <none> option to `cppcheck-lite.standard`, allowing users to specify it manually via `cppcheck-lite.arguments` or let `cppcheck` use its default setting.
 - Improved Windows compatibility by quoting paths and normalizing backslashes in executable and file paths. 

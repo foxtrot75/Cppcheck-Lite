@@ -163,7 +163,7 @@ async function runCppcheck(
 
             const range = new vscode.Range(line, col, line, col);
             const diagnostic = new vscode.Diagnostic(range, message, diagSeverity);
-            diagnostic.code = standard !== "<none>" ? standard : "";;
+            diagnostic.code = standard !== "<none>" ? standard : "";
 
             diagnostics.push(diagnostic);
         }
