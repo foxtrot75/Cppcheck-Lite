@@ -47,7 +47,7 @@ export function activate(context: vscode.ExtensionContext) {
         if (!["c", "cpp"].includes(document.languageId)) {
             // Not a C/C++ file, skip
             return;
-            
+
         }
 
         // Check if the document is visible in any editor
@@ -148,7 +148,7 @@ async function runCppcheck(
         while ((match = regex.exec(allOutput)) !== null) {
             const [, file, lineStr, colStr, severityStr, message] = match;
             const line = parseInt(lineStr, 10) - 1;
-            const col = parseInt(colStr, 10) - 1;
+            const col = parseInt(colStr, 10);
             const diagSeverity = parseSeverity(severityStr);
 
             // Filter out if severity is less than our minimum
@@ -163,7 +163,7 @@ async function runCppcheck(
 
             const range = new vscode.Range(line, col, line, col);
             const diagnostic = new vscode.Diagnostic(range, message, diagSeverity);
-            diagnostic.code = standard !== "<none>" ? standard : "";; 
+            diagnostic.code = standard !== "<none>" ? standard : "";;
 
             diagnostics.push(diagnostic);
         }
