@@ -21,7 +21,7 @@
     "analysis",
     "diagnostic",
     "linter"
-  ],  
+  ],
   "categories": [
     "Linters"
   ],
@@ -35,7 +35,7 @@
   "contributes": {
     "configuration": [
       {
-        "title": "Cppcheck Lite (General)",
+        "title": "General",
         "order": 1,
         "properties": {
           "cppcheck-lite.enable": {
@@ -72,7 +72,7 @@
         }
       },
       {
-        "title": "Cppcheck Lite (Advanced)",
+        "title": "Advanced",
         "order": 2,
         "properties": {
           "cppcheck-lite.path": {
@@ -84,6 +84,11 @@
             "type": "string",
             "default": "",
             "description": "Additional command line arguments for cppcheck."
+          },
+          "cppcheck-lite.project": {
+            "type": "boolean",
+            "default": false,
+            "description": "Indicates using project configuration."
           }
         }
       }

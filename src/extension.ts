@@ -42,6 +42,8 @@ export function activate(context: vscode.ExtensionContext) {
     const diagnosticCollection = vscode.languages.createDiagnosticCollection("Cppcheck Lite");
     context.subscriptions.push(diagnosticCollection);
 
+    const outputChannel = vscode.window.createOutputChannel('Cppcheck Lite', 'cppcheck-lite');
+
     async function handleDocument(document: vscode.TextDocument) {
         // Only process C/C++ files.
         if (!["c", "cpp"].includes(document.languageId)) {
@@ -64,6 +66,7 @@ export function activate(context: vscode.ExtensionContext) {
         const standard = config.get<string>("cppcheck-lite.standard", "c++17");
         const userPath = config.get<string>("cppcheck-lite.path")?.trim() || "";
         const commandPath = userPath ? userPath : "cppcheck";
+        const project = config.get<boolean>("cppcheck-lite.project", false);
 
         // If disabled, clear any existing diagnostics for this doc.
         if (!isEnabled) {
@@ -88,7 +91,9 @@ export function activate(context: vscode.ExtensionContext) {
             extraArgs,
             minSevString,
             standard,
-            diagnosticCollection
+            project,
+            diagnosticCollection,
+            outputChannel
         );
     }
 
@@ -118,26 +123,35 @@ async function runCppcheck(
     extraArgs: string,
     minSevString: string,
     standard: string,
-    diagnosticCollection: vscode.DiagnosticCollection
+    project: boolean,
+    diagnosticCollection: vscode.DiagnosticCollection,
+    outputChannel: vscode.OutputChannel
 ): Promise<void> {
     // Clear existing diagnostics for this file
     diagnosticCollection.delete(document.uri);
 
-    const filePath = document.fileName;
+    const filePath = document.fileName.replace(/\\/g, '/').trim();
     const minSevNum = parseMinSeverity(minSevString);
-    const standardArg = standard !== "<none>" ? `--std=${standard}` : "";
-    const command = `"${commandPath}" ${standardArg} ${extraArgs} "${filePath.replace(/\\/g, '/')}"`.trim();
 
-    console.log("Cppcheck command:", command);
+    const standardArg = standard !== "<none>" ? `--std=${standard}` : "";
+    const filePathArg = project ? `--file-filter=${filePath}` : `${filePath}`;
+
+    const command = `"${commandPath}" ${standardArg} ${extraArgs} ${filePathArg}`;
+
+    console.log(`Cppcheck command: ${command}`);
+    outputChannel.appendLine(`Cppcheck command: ${command}`);
 
     cp.exec(command, (error, stdout, stderr) => {
         if (error) {
             vscode.window.showErrorMessage(`Cppcheck Lite: ${error.message}`);
+            outputChannel.appendLine(`Error: ${error.message}`);
             return;
         }
 
         const allOutput = stdout + "\n" + stderr;
         const diagnostics: vscode.Diagnostic[] = [];
+
+        outputChannel.appendLine(`Output: ${allOutput}`);
 
         // Example lines we might see:
         //   file.cpp:6:1: error: Something [id]
